@@ -293,6 +293,14 @@ function addResourceTag (req) {
     .filter(val => val)
     .join(' ')
 
+  const debugObj = {
+    tags,
+    path,
+    resource
+  }
+
+  console.log(`nodejs-tracing-debug: ${JSON.stringify(debugObj)}`)
+
   if (!resource) {
     const componentName = tags.component ? tags.component : 'handle'
     span.setTag(RESOURCE_NAME, `${componentName}.request`)
