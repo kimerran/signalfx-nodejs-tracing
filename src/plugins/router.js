@@ -18,7 +18,6 @@ function createWrapProcessParams (tracer, config) {
   return function wrapProcessParams (processParams) {
     return function processParamsWithTrace (layer, called, req, res, done) {
       const matchers = layer._datadog_matchers
-      console.log(`nodejs-tracing-debug:matchers: ${JSON.stringify(matchers)}`)
 
       req = done ? req : called
 

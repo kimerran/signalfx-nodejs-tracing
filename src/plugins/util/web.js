@@ -1,6 +1,7 @@
 'use strict'
 
 const pathToRegexp = require('path-to-regexp')
+const Url = require('url')
 const xregexp = require('xregexp')
 const analyticsSampler = require('../../analytics_sampler')
 const FORMAT_HTTP_HEADERS = require('opentracing').FORMAT_HTTP_HEADERS
@@ -79,7 +80,6 @@ const web = {
 
   // Add a route segment that will be used for the resource name.
   enterRoute (req, path) {
-    console.log(`nodejs-tracing-debug:enterRoute: ${JSON.stringify(path)}`)
     req._datadog.paths.push(path)
   },
 
@@ -272,7 +272,6 @@ function addResponseTags (req) {
   const span = req._datadog.span
   const res = req._datadog.res
 
-  console.log(`nodejs-tracing-debug:addResponseTags: ${JSON.stringify(req._datadog.paths)}`)
   if (req._datadog.paths.length > 0) {
     span.setTag(HTTP_ROUTE, req._datadog.paths.join(''))
   }
@@ -295,17 +294,15 @@ function addResourceTag (req) {
     .filter(val => val)
     .join(' ')
 
-  const debugObj = {
-    tags,
-    path,
-    resource
-  }
-
-  console.log(`nodejs-tracing-debug:addResourceTag: ${JSON.stringify(debugObj)}`)
-
   if (!resource) {
-    const componentName = tags.component ? tags.component : 'handle'
-    span.setTag(RESOURCE_NAME, `${componentName}.request`)
+    const httpUrl = tags[HTTP_URL]
+    if (httpUrl) {
+      const pathName = Url.parse(httpUrl)
+      span.setTag(RESOURCE_NAME, pathName)
+    } else {
+      const componentName = tags.component ? tags.component : 'handle'
+      span.setTag(RESOURCE_NAME, `${componentName}.request`)
+    }
   } else {
     span.setTag(RESOURCE_NAME, resource)
   }
