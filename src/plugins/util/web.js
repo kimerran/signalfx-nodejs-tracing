@@ -79,6 +79,7 @@ const web = {
 
   // Add a route segment that will be used for the resource name.
   enterRoute (req, path) {
+    console.log(`nodejs-tracing-debug:enterRoute: ${JSON.stringify(path)}`)
     req._datadog.paths.push(path)
   },
 
