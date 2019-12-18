@@ -298,7 +298,7 @@ function addResourceTag (req) {
     const httpUrl = tags[HTTP_URL]
     if (httpUrl) {
       const pathName = Url.parse(httpUrl)
-      span.setTag(RESOURCE_NAME, pathName)
+      span.setTag(RESOURCE_NAME, pathName.path)
     } else {
       const componentName = tags.component ? tags.component : 'handle'
       span.setTag(RESOURCE_NAME, `${componentName}.request`)
