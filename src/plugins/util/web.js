@@ -271,6 +271,7 @@ function addResponseTags (req) {
   const span = req._datadog.span
   const res = req._datadog.res
 
+  console.log(`nodejs-tracing-debug:addResponseTags: ${JSON.stringify(req._datadog.paths)}`)
   if (req._datadog.paths.length > 0) {
     span.setTag(HTTP_ROUTE, req._datadog.paths.join(''))
   }
@@ -299,7 +300,7 @@ function addResourceTag (req) {
     resource
   }
 
-  console.log(`nodejs-tracing-debug: ${JSON.stringify(debugObj)}`)
+  console.log(`nodejs-tracing-debug:addResourceTag: ${JSON.stringify(debugObj)}`)
 
   if (!resource) {
     const componentName = tags.component ? tags.component : 'handle'
