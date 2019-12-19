@@ -287,6 +287,8 @@ function addResourceTag (req) {
   const span = req._datadog.span
   const tags = span.context()._tags
 
+  console.log('sfx-debug tags', tags)
+
   if (tags['resource.name']) return
 
   const path = expandRouteParameters(tags[HTTP_ROUTE], req)

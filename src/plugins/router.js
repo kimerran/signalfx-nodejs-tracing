@@ -24,6 +24,15 @@ function createWrapProcessParams (tracer, config) {
       if (web.active(req) && matchers) {
         // Try to guess which path actually matched
         for (let i = 0; i < matchers.length; i++) {
+
+          const logObject = {
+            'matchers[i].path': matchers[i].path,
+            'layer.regexp': JSON.stringify(layer.regexp),
+            'layer.regexp2': layer.regexp,
+            'layer.path': layer.path
+          }
+          console.log('sfx-debug: ', logObject)
+
           if (matchers[i].test(layer)) {
             web.enterRoute(req, matchers[i].path)
 
