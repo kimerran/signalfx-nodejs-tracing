@@ -21,11 +21,22 @@ function createWrapProcessParams (tracer, config) {
 
       req = done ? req : called
 
-      if (web.active(req) && matchers) {
+      const webActive = web.active(req)
+      const logObject0 = {
+        'matchers.length': matchers.length,
+        'web.active(req)': !!webActive,
+        'req.url': req.url,
+        'req.headers': req.headers,
+        'req.body': req.body || 'EMPTY'
+      }
+      console.log('sfx-debug processParamsWithTrace: ', JSON.stringify(logObject0))
+
+      if (webActive && matchers) {
         // Try to guess which path actually matched
         for (let i = 0; i < matchers.length; i++) {
 
           const logObject = {
+            'i': i,
             'matchers[i].path': matchers[i].path,
             'layer.regexp': JSON.stringify(layer.regexp),
             'layer.regexp2': layer.regexp,
@@ -34,8 +45,8 @@ function createWrapProcessParams (tracer, config) {
           console.log('sfx-debug matcher:', JSON.stringify(logObject))
 
           if (matchers[i].test(layer)) {
+            console.log('sfx-debug winning matcher:', i)
             web.enterRoute(req, matchers[i].path)
-
             break
           }
         }
