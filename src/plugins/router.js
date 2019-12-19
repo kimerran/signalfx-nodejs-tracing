@@ -31,7 +31,7 @@ function createWrapProcessParams (tracer, config) {
             'layer.regexp2': layer.regexp,
             'layer.path': layer.path
           }
-          console.log('sfx-debug: ', logObject)
+          console.log('sfx-debug matcher:', JSON.stringify(logObject))
 
           if (matchers[i].test(layer)) {
             web.enterRoute(req, matchers[i].path)

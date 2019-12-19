@@ -287,7 +287,7 @@ function addResourceTag (req) {
   const span = req._datadog.span
   const tags = span.context()._tags
 
-  console.log('sfx-debug tags', tags)
+  console.log('sfx-debug tags:', JSON.stringify(tags))
 
   if (tags['resource.name']) return
 
